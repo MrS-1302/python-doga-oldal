@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.13.2/ace.js" type="text/javascript" charset="utf-8" nonce="EDNnf03nceIOfn39fn3e9h3sdfa"></script>
+    <script src="../assets/js/brython.js"></script>
+    <script src="../assets/js/brython_stdlib.js"></script>
+
+    <link rel="stylesheet" href="../assets/css/main.css" type="text/css">
+</head>
+
+
+<body onload="brython()">
+    <script type="text/python3" id="tests">
+        from browser import document, console, alert, window
+        import javascript
+
+        def run(e):
+            adat = window.editor_getValue()
+            loc = {}
+            printek = []
+            exec(adat)
+            window.output(printek)
+
+        document['run'].bind('click', run)
+    </script>
+
+    <div id="container" class="editor_parent">
+        <div id="editor">print("Asd")</div>
+        <button id="run"> ▶ Run</button>
+        <div id="consoleParent">Output: <div id="console"></div></div>
+    </div>
+    
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/tomorrow_night");
+        editor.session.setMode("ace/mode/python");
+
+        function editor_themeCsere() {
+            if (editor.container.classList.value.indexOf("ace-tomorrow-night") != -1) {
+                editor.setTheme("ace/theme/tomorrow")
+            } else editor.setTheme("ace/theme/tomorrow_night")
+        }
+
+        function editor_getValue() {
+            inputok = ["nem","igen"]
+            v = editor.container.innerText
+            v = v.replace(/^(\d\n)*/g,"")
+            v = v.replace(/print\(/g, "printek.append(")
+            szam = 0
+            while ((match = /input\(\".*\"\)/g.exec(v)) != null) {
+                v = v.replace(match[0], "'" + inputok[szam] + "'");
+                szam++
+            }
+            return v
+        }
+
+        function output(printek) {
+            document.getElementById("console").innerHTML = ""
+            for (i = 0; i < printek.length; i++) {
+                document.getElementById("console").innerHTML += "<span>" + printek[i] + "</span><br>"
+            }
+        }
+    </script>
+
+    
+</body>
+
+</html>

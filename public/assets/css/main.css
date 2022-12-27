@@ -1,0 +1,200 @@
+.ace_identifier { color: rgb(114, 194, 255) !important; }
+.ace_string { color: rgb(189, 104, 13) !important; }
+.ace_comment { color: rgb(1, 150, 1) !important; }
+
+#editor {
+    height: 400px; 
+    width: 600px; 
+    border: solid 1px rgb(190, 190, 190); 
+    border-radius: 3px;
+}
+
+body, html {
+    background-color: #393E46;
+    color: #EEEEEE;
+    height: 100%;
+}
+
+.login-parent {
+    background-color: #222831;
+    border-radius: 10px;
+    padding: 30px;
+    /* margin: 10% 25% 10% 25%; */
+    box-shadow: 0px 0px 40px 15px #222831;
+    display: flex;
+    margin: auto;
+}
+
+.login-item input[type=text], .login-item input[type=password] {
+    border: solid 3px transparent;
+    color: #EEEEEE;
+    background-color: #393E46;
+    margin: 3px;
+    padding: 3px;
+    padding-left: 5px;
+    border-radius: 10px;
+    outline: none !important;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 1px 1px #393E46;
+}
+
+.login-item input[type=text]:focus, .login-item input[type=password]:focus {
+    border-color: #FFD369;
+}
+
+.login-item input[type=text]:hover:not(:focus), .login-item input[type=password]:hover:not(:focus) {
+    border-color: #FFD369;
+    border-style: dashed;
+}
+
+.login-item input[type=button], .login-item input[type=submit] {
+    color: #EEEEEE;
+    background-color: transparent;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: solid 3px #FFD369;
+    outline: none;
+}
+
+.login-item input[type=button]:hover, .login-item input[type=button]:focus, .login-item input[type=submit]:hover, .login-item input[type=submit]:focus {
+    color: #222831;
+    background-color: #FFD369;
+}
+
+.login-item-left {
+    border-right: solid 1px #EEEEEE;
+}
+
+.login-item-right {
+    border-left: solid 1px #EEEEEE;
+}
+
+@media only screen and (max-width: 767px) {
+    .login-item-left {
+        border-right: none;
+        border-top: solid 2px #EEEEEE;
+        border-bottom: solid 1px #EEEEEE;
+    }
+
+    .login-item-right {
+        border-left: none;
+        border-top: solid 1px #EEEEEE;
+    }
+}
+
+.hiba-alert {
+    border-bottom: solid 2px rgb(216, 56, 56);
+    color: #EEEEEE;
+    border-radius: 5px 5px 0px 5px;
+    width: fit-content;
+    font-size: 1rem;
+    padding: 3px 10px 3px 0px;
+    display: inline-block;
+}
+
+.hiba-alert::before {
+    content: "!";
+    background-color: rgb(216, 56, 56);
+    padding: 6px 13px 6px 13px;
+    border-radius: 5px 0px 0px 3px;
+    margin-right: 10px;
+}
+
+
+
+
+body, html {
+    overflow: auto;
+}
+
+.navbar-sajat {
+    background-color: transparent;
+    height: fit-content;
+}
+
+.navbar-sajat-parent {
+    position: sticky;
+    top: 10px;
+    left: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.navbar-sajat-item {
+    list-style-type: none;
+    display: block;
+}
+
+.content {
+    height: 100%;
+    overflow: auto;
+    padding: 0px 10px 0px 10px;
+}
+
+@media only screen and (max-width: 992px) {
+    .navbar-sajat {
+        border-right: none;
+        border-bottom: solid 3px #EEEEEE;
+    }
+    .navbar-sajat ul {
+        position:relative;
+    }
+    .login-parent {
+        height: 95vh;
+    }
+}
+
+.login-parent::-webkit-scrollbar {
+    width: 5px;
+}
+
+.login-parent::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.login-parent::-webkit-scrollbar-thumb {
+    background: #FFD369; 
+}
+
+
+.login-parent {
+    height: 500px;
+    overflow: auto;
+    background-color: #222831;
+}
+
+a {
+    text-decoration: none;
+    color: #EEEEEE;
+}
+
+.active {
+    color: #FFD369;
+}
+
+.active:hover {
+    color: #FFD369;
+}
+
+a:hover:not(.active) {
+    color: #EEEEEE;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+input, #osztaly {
+    background-color: #393E46;
+    color: #EEEEEE;
+    outline: none;
+    border-radius: 10px;
+    margin: 3px;
+    padding: 3px;
+    border: solid 3px transparent;
+}
+
+input:hover, #osztaly:hover {
+    border: dashed 3px #FFD369;
+}

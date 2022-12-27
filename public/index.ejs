@@ -1,0 +1,28 @@
+<%- include('template/header', {title: "Python kiegészítő"}) %>
+<% if (typeof hiba == "undefined") hiba = 0 %>
+
+
+<div class="row login-parent text-center my-3">
+    <div class="col-12 m-auto pb-5 login-item">
+        <h1>Gábor Dénes Technikum és Gimnázium<br>Moodle Python kiegészítő</h1>
+    </div>
+    <div class="col-12 col-md-6 py-auto pb-md-0 pb-4 pt-md-0 pt-4 login-item login-item-left">
+        <h2>Dolgozat írás</h2>
+        <input type="text" placeholder="Név"><br>
+        <input type="text" placeholder="Kód"><br>
+        <input type="button" value="Kezdés">
+    </div>
+    <div class="col-12 col-md-6 py-auto pt-md-0 pt-4 login-item login-item-right">
+        <form action="/" method="post">
+            <h2>Bejelentkezés</h2>
+            <input type="text" placeholder="Felhasználónév" id="name" name="name"><br>
+            <input type="password" placeholder="Jelszó" id="pass" name="pass"><br>
+            <input type="submit" value="Bejelentkezés"><br>
+            <% if (hiba == 2) { %>
+                <div class="hiba-alert" id="hiba2">Hibás felhasználónév/jelszó!</div>
+            <% } %> 
+        </form>
+    </div>
+</div>
+
+<%- include('template/footer', {login: true}) -%>
