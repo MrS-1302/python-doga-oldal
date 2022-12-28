@@ -26,15 +26,17 @@ app.use(session({
 app.use('/api/v1', api);
 
 app.get('/', async (req, res, next) => {
-    res.render("index")
+    console.log(await db.all("SELECT * FROM osztalyok"))
 });
 
 app.post('/', async (req, res, next) => {
     rows = await db.all(`SELECT id FROM users WHERE name = '${req.body.name}' and password = '${req.body.pass}'`)
-    if (rows.length == 1) {
+    if (rows.length != 1) {
+        res.render("index", {hiba: 2})
+    } else {
         await db.session.save(rows[0].id,req.session.id)
         res.render("user/index")
-    } else res.render("index", {hiba: 2})
+    }
 });
 
 app.get('/user', async (req, res, next) => {
@@ -48,7 +50,7 @@ app.get('/ujdolgozat/', async (req, res, next) => {
         osztaly = []
         rows = await db.all("SELECT * FROM osztalyok GROUP BY osztaly")
         if (rows.length != 0 ) {
-            for (rows of most) {
+            for (most of rows) {
                 osztaly.push(most.osztaly)
             }
 
@@ -65,7 +67,7 @@ app.get('/osztalyok/', async (req, res, next) => {
         osztaly = []
         rows = await db.all("SELECT * FROM osztalyok GROUP BY osztaly")
         if (rows.length != 0 ) {
-            for (rows of most) {
+            for (most of rows) {
                 osztaly.push(most.osztaly)
             }
 

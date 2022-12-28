@@ -29,7 +29,18 @@
         margin-right: 4px;
         padding-right: 4px;
         border-right: solid 2px #EEEEEE;
-    }   
+    }
+
+    table tbody tr {
+        counter-increment: table-rows;
+    }
+    /** Note that we can use counter-increment in :before psuedo element **/
+    .szam::before {
+        position: relative;
+        left: calc(50% + 3px);
+        top: 8px;
+        content: counter(table-rows) ".";
+    }
   </style>
 
   <div class="col-12 col-lg-10 h-100 pt-3 pt-lg-0">
@@ -37,47 +48,100 @@
         <h3>Osztály létrehozása</h3>
 
         <label for="vege" class="mt-4 mb-2">Osztály megnevezése:</label>
-        <input type="text" id="vege" name="birthdaytime"><br>
+        <input type="text" id="megnevezes" name="birthdaytime"><br>
 
         <label for="vege" class="mb-3">Diákok importálása txt-ből:</label>
-        <input type="file" id="vege" name="birthdaytime">
+        <input type="file" id="fajl" name="birthdaytime">
 
-        <form action="/osztalyok/ujosztaly" method="post">
-            <table class="">
-                <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Név</th>
-                    <th scope="col">Jelszó</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1.</th>
+        <table class="table table-responsive-md table-striped table-dark">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Név</th>
+                <th scope="col">Jelszó</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="sorok-parent">
+                <!-- <tr>
+                    <th scope="row" class="szam"></th>
                     <td><input type="text" class="input-osztaly" value="Vajda Simon"></td>
                     <td><input type="text" class="input-osztaly" value="Ez a jelszavam!"></td>
-                    <td><button type="button" class="btn btn-danger">Törlés</button></td>
-                </tr>
-                <tr>
-                    <th scope="row">2.</th>
-                    <td><input type="text"></td>
-                    <td><input type="text">
-                    <td><button type="button" class="btn btn-primary">Hozzáadás</button></td>
-                </tr>
-                <!-- <tr>
-                    <th scope="row">2.</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                </tr>
-                <tr>
-                    <th scope="row">3.</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
+                    <td><button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Törlés</button></td>
                 </tr> -->
-                </tbody>
-            </table>
-        </form>
+                <tr>
+                    <th scope="row" class="szam"></th>
+                    <td><input type="text" id="ujnev"></td>
+                    <td><input type="text" id="ujjelszo">
+                    <td><button type="button" class="btn btn-primary" onclick="hozzaad()">Hozzáadás</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="button" value="Mentés">
+
+        
+        <script>
+            function hozzaad() {
+                ujsor(document.getElementById("ujnev").value, document.getElementById("ujjelszo").value)
+                
+                document.getElementById("ujnev").value = ""
+                document.getElementById("ujjelszo").value = ""
+            }
+
+            document.getElementById('fajl')
+                .addEventListener('change', function() {
+                
+                var fr=new FileReader();
+                fr.onload=function(){
+                    emberek = fr.result.split("\r\n")
+
+                    for (ember of emberek) {
+                        ujsor(ember, ember.replaceAll(" ", "-") + "-ujjelszo")
+                    }
+                }
+                
+                fr.readAsText(this.files[0]);
+            })
+
+            function ujsor(nev,pass) {
+                table = document.getElementById("sorok-parent");
+                tr = table.insertRow(table.rows.length - 1);
+                th = tr.insertCell(0);
+                td1 = tr.insertCell(1);
+                td2 = tr.insertCell(2);
+                td3 = tr.insertCell(3);
+                
+                th.outerHTML = "<th scope'row' class='szam'></th>"
+                td1.innerHTML = "<input type='text' class='input-osztaly' value='" + nev + "'>"
+                td2.innerHTML = "<input type='text' class='input-osztaly' value='" + pass + "'>"
+                td3.innerHTML = "<button type='button' class='btn btn-danger' onclick='this.parentElement.parentElement.remove()'>Törlés</button>"
+            }
+            
+            function mentes() {
+                szoveg = ""
+
+                table = document.getElementById("sorok-parent");
+                for (a = 1; a < table.rows.length; a++) {
+                    u = document.querySelector("#sorok-parent > tr:nth-child(" + a + ") > td:nth-child(2) > input").value
+                    p = document.querySelector("#sorok-parent > tr:nth-child(" + a + ") > td:nth-child(3) > input").value
+                    if (a == table.rows.length - 1) szoveg += `{'user': '${u}', 'pass': '${p}'}`
+                    else szoveg += `{'user': '${u}', 'pass': '${p}'},`
+                }
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        valasz = JSON.parse(this.responseText);
+
+                    }
+                };
+                xhttp.open("POST", "/api/v1/osztaly/uj/" + ("{'osztaly': '" + document.getElementById("megnevezes").value + "', 'emberek': [" + szoveg + "]}").replaceAll("'", '"'), true);
+                xhttp.send();
+            }
+        </script>
+
+
+
     </div>
   </div>
 </div>

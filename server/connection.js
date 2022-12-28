@@ -54,7 +54,7 @@ var session = session_fun();
     await run("CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY, user int, sessionCode varcher(255), letrehozva DATETIME DEFAULT CURRENT_TIMESTAMP)")
     await run("CREATE TABLE IF NOT EXISTS dolgozat (id INTEGER PRIMARY KEY, letrehozta INT, nev VARCHAR(255), key VARCHAR(255), osztaly VARCHAR(5), kezd DATETIME, vege DATETIME, hozzaadva DATETIME DEFAULT CURRENT_TIMESTAMP)")
     await run("CREATE TABLE IF NOT EXISTS feladat (doga_id INT, pont INT, megoldas VARCHAR(3000), kotelezoSzavak VARCHAR(3000), helyesseg INT DEFAULT 90, hiba_ell INT DEFAULT 0, console_check INT DEFAULT 0,5, szavak_check INT DEFAULT 0,5)")
-    await run("CREATE TABLE IF NOT EXISTS osztalyok (osztaly VARCHAR(5),nev VARCHAR(255))")
+    await run("CREATE TABLE IF NOT EXISTS osztalyok (osztaly VARCHAR(10), nev VARCHAR(255), jelszo VARCHER(255))")
 
     rows = await all("SELECT * FROM users where name = 'simon'")
     if (rows.length == 0) run("INSERT INTO users (name, password) VALUES ('simon', 'Ez egy erős jelszó!')")

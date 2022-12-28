@@ -127,8 +127,9 @@ body, html {
 
 .content {
     height: 100%;
-    overflow: hidden;
-    padding: 0px 10px 0px 10px;
+    overflow: auto;
+    padding: 0px 0px 0px 10px;
+    border-radius: 10px;
 }
 
 .login-parent {
@@ -150,18 +151,21 @@ body, html {
 }
 
 .login-parent::-webkit-scrollbar {
-    width: 5px;
+    /* width: 5px; */
+    display: none;
 }
 
-.login-parent::-webkit-scrollbar-track {
+/* .login-parent::-webkit-scrollbar-track {
     background: transparent;
 }
 
 .login-parent::-webkit-scrollbar-thumb {
     background: #FFD369; 
+} */
+
+.content::-webkit-scrollbar {
+    display: none;
 }
-
-
 
 a {
     text-decoration: none;
