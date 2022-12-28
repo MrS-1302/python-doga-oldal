@@ -1,0 +1,85 @@
+<%- include('../template/header', {title: "Python kiegészítő"}) %>
+<% if (typeof hiba == "undefined") hiba = 0 %>
+  
+<div class="row login-parent my-3">
+
+  <%- include('../template/navbar', {active: 3}) -%>
+
+  <style>
+    .input-osztaly {
+        background-color: transparent;
+    }
+
+    .input-osztaly:hover {
+        border: solid 3px transparent;
+    }
+
+    .input-osztaly:focus {
+        border: solid 3px #FFD369;
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+        visibility: hidden;
+        display: none;
+    }
+
+    input[type="file"]::before {
+        content: "Osztály betöltése";
+        width: fit-content;
+        margin-right: 4px;
+        padding-right: 4px;
+        border-right: solid 2px #EEEEEE;
+    }   
+  </style>
+
+  <div class="col-12 col-lg-10 h-100 pt-3 pt-lg-0">
+    <div class="content">
+        <h3>Osztály létrehozása</h3>
+
+        <label for="vege" class="mt-4 mb-2">Osztály megnevezése:</label>
+        <input type="text" id="vege" name="birthdaytime"><br>
+
+        <label for="vege" class="mb-3">Diákok importálása txt-ből:</label>
+        <input type="file" id="vege" name="birthdaytime">
+
+        <form action="/osztalyok/ujosztaly" method="post">
+            <table class="">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Név</th>
+                    <th scope="col">Jelszó</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1.</th>
+                    <td><input type="text" class="input-osztaly" value="Vajda Simon"></td>
+                    <td><input type="text" class="input-osztaly" value="Ez a jelszavam!"></td>
+                    <td><button type="button" class="btn btn-danger">Törlés</button></td>
+                </tr>
+                <tr>
+                    <th scope="row">2.</th>
+                    <td><input type="text"></td>
+                    <td><input type="text">
+                    <td><button type="button" class="btn btn-primary">Hozzáadás</button></td>
+                </tr>
+                <!-- <tr>
+                    <th scope="row">2.</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                </tr>
+                <tr>
+                    <th scope="row">3.</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                </tr> -->
+                </tbody>
+            </table>
+        </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../template/footer', {login: false}) -%>

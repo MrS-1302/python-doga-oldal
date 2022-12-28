@@ -11,6 +11,7 @@ const session = require('express-session');
 
 
 const app = express()
+var asd = __dirname.split("\\").slice(0,-1).join("/")
 
 app.set("view engine", "ejs");
 app.set("views", asd + "/public");
@@ -19,47 +20,86 @@ app.use(session({
   secret: 'my-secret',
   resave: true,
   saveUninitialized: true,
-  expires: new Date(Date.now() + (30 * 60 * 1000))
+  cookie: { maxAge: 30 * 60 * 1000}
 }));
 
 app.use('/api/v1', api);
 
-
 app.get('/', async (req, res, next) => {
-    console.log(`Munkamenet azonosító: ${req.session.id}`);
     res.render("index")
 });
 
 app.post('/', async (req, res, next) => {
-    console.log(`Munkamenet azonosító: ${req.session.id}`);
     rows = await db.all(`SELECT id FROM users WHERE name = '${req.body.name}' and password = '${req.body.pass}'`)
     if (rows.length == 1) {
-        token = await db.token.gen(rows[0].id)
-        res.cookie('token', token, { httpOnly: true });
+        await db.session.save(rows[0].id,req.session.id)
         res.render("user/index")
-        //token = undefined
     } else res.render("index", {hiba: 2})
 });
 
-app.get('/ujdolgozat/', async (req, res, next) => {
-    console.log(`Munkamenet azonosító: ${req.session.id}`);
-    try {
-        if (await db.token.valid(req.cookies.token)) {
-            osztaly = []
-            osztaly.push("9.a")
-            osztaly.push("9.g")
-            osztaly.push("11.g")
-            osztaly.push("13.a")
-            res.render("ujdolgozat/index", {osztalyok:osztaly})
-        } else res.sendFile(__dirname + "/404/meh.jpg")
-    } catch(e) {
-        res.sendFile(__dirname + "/404/meh.jpg")
-    }
+app.get('/user', async (req, res, next) => {
+    if (await db.session.valid(req.session.id)) {
+        res.render("user/index")
+    } else res.sendFile(__dirname + "/404/meh.jpg")
 });
 
-app.get('/user/:token', async (req, res, next) => {
-    res.render("user/index", {osztalyok:osztaly, token_get: req.params.token})
+app.get('/ujdolgozat/', async (req, res, next) => {
+    if (await db.session.valid(req.session.id)) {
+        osztaly = []
+        rows = await db.all("SELECT * FROM osztalyok GROUP BY osztaly")
+        if (rows.length != 0 ) {
+            for (rows of most) {
+                osztaly.push(most.osztaly)
+            }
+
+            res.render("ujdolgozat/index", {osztalyok:osztaly})
+        } else {
+            osztaly.push("Még nincsen osztály létrehozva!")
+            res.render("ujdolgozat/index", {osztalyok:osztaly, hiba: 1})
+        }
+    } else res.sendFile(__dirname + "/404/meh.jpg")
 });
+
+app.get('/osztalyok/', async (req, res, next) => {
+    if (await db.session.valid(req.session.id)) {
+        osztaly = []
+        rows = await db.all("SELECT * FROM osztalyok GROUP BY osztaly")
+        if (rows.length != 0 ) {
+            for (rows of most) {
+                osztaly.push(most.osztaly)
+            }
+
+            res.render("osztalyok/index", {osztalyok:osztaly})
+        } else {
+            osztaly.push("Még nincsen osztály létrehozva!")
+            res.render("osztalyok/index", {osztalyok:osztaly, hiba: 1})
+        }
+    } else res.sendFile(__dirname + "/404/meh.jpg")
+});
+
+app.get('/osztalyok/uj/', async (req, res, next) => {
+    if (await db.session.valid(req.session.id)) {
+        res.render("osztalyok/ujosztaly")
+
+        /* osztaly = []
+        rows = await db.all("SELECT * FROM osztalyok GROUP BY osztaly")
+        if (rows.length != 0 ) {
+            for (rows of most) {
+                osztaly.push(most.osztaly)
+            }
+
+            res.render("osztalyok/index", {osztalyok:osztaly})
+        } else {
+            osztaly.push("Még nincsen osztály létrehozva!")
+            res.render("osztalyok/index", {osztalyok:osztaly, hiba: 1})
+        } */
+    } else res.sendFile(__dirname + "/404/meh.jpg")
+});
+
+
+app.get('/sess', (req, res) => {
+    req.sessionStore.all((err, sessions)=>{ res.send(sessions) })
+})
 
 app.get('*', async (req, res, next) => {
     let path = req.url
@@ -68,41 +108,8 @@ app.get('*', async (req, res, next) => {
         if (these.fileSize(asd + "/public/" + path) != -1) {
             res.sendFile(asd + "/public/" + path)
         } else res.sendFile(__dirname + "/404/meh.jpg")
-    } 
-    else if (these.fileSize(Path.join(asd, "public", path, "index.ejs")) != -1) {
-
-        if (path.indexOf("ujdolgozat") != -1) {
-            osztaly = []
-            osztaly.push("9.a")
-            osztaly.push("9.g")
-            osztaly.push("11.g")
-            osztaly.push("13.a")
-
-            res.render(Path.join(asd, "public", path, "index.ejs"), {osztalyok:osztaly})
-        }
-        else res.render(Path.join(asd, "public", path, "index.ejs"))
     } else next()
-
-
-
 });
-
-/* app.get('/:token/*', async (req, res, next) => {
-    let token = req.params.token
-    let path = req.url
-     */
-    //if ((req.headers.accept.startsWith("text/css") && path.endsWith(".css")) || (req.headers.accept.startsWith("*/*") && path.endsWith(".js"))) { 
-     /*    next()
-    } else if (path.startsWith("/t") == false) {
-        res.sendFile(__dirname + "/404/meh.jpg")
-    } else if (await db.token.valid(token.slice(1,))) {
-        path = path.split("/").slice(2).join("/")
-        if (path.split("/")[path.split("/").length - 1].search(/\.(\w|\W)*$/g) == -1) path += "/index.html"
-        if (these.fileSize(asd + "/public/" + path) != -1) {
-            res.sendFile(asd + "/public/" + path)
-        } else res.sendFile(__dirname + "/404/meh.jpg")
-    } else res.sendFile(__dirname + "/404/meh.jpg")
-}); */
 
 /* app.use(express.static(__dirname + '/../public')); */
 

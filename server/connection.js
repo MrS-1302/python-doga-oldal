@@ -23,46 +23,38 @@ function all(asd) {
     });
 }
 
-var token_fun = function () {
-    var gen = async function gen_fun (id, hossz=8) {
+var session_fun = function () {
+    var save = async function save_fun (user, id) {
         return new Promise(async (resolve) => {
-            var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            var token = '';
-            for(var i = 0; i < hossz; i++) {
-                token += chars[Math.floor(Math.random() * chars.length)];
-            }
-
-            await run(`INSERT INTO tokens (user,token) VALUES ('${id}', '${token}')`)
-            resolve(token)
+            run(`INSERT INTO sessions (user, sessionCode) VALUES ('${user}', '${id}')`)
+            resolve(true)
         })
     };
 
-    var valid = async function valid_fun (token) {
+    var valid = async function valid_fun (id) {
         return new Promise(async (resolve) => {
-            if (token.length == 8) {
-                rows = await all(`SELECT * FROM tokens WHERE token = '${token}'`)
-                if (rows.length == 0) resolve(false)
-                else resolve(true)
-            } else resolve(false)
+            rows = await all(`SELECT * FROM sessions WHERE sessionCode = '${id}'`)
+            if (rows.length > 0) resolve(true)
+            else resolve(false)
         });
     };
 
     return {
-        gen: gen,
+        save: save,
         valid: valid
     };
 };
   
-var token = token_fun();
+var session = session_fun();
 
 
 
 (async function () { 
     await run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name varcher(255), password varcher(255))");
-    await run("CREATE TABLE IF NOT EXISTS tokens (id INTEGER PRIMARY KEY, user int, token varcher(255), used int DEFAULT 0, letrehozva DATETIME DEFAULT CURRENT_TIMESTAMP)")
+    await run("CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY, user int, sessionCode varcher(255), letrehozva DATETIME DEFAULT CURRENT_TIMESTAMP)")
     await run("CREATE TABLE IF NOT EXISTS dolgozat (id INTEGER PRIMARY KEY, letrehozta INT, nev VARCHAR(255), key VARCHAR(255), osztaly VARCHAR(5), kezd DATETIME, vege DATETIME, hozzaadva DATETIME DEFAULT CURRENT_TIMESTAMP)")
     await run("CREATE TABLE IF NOT EXISTS feladat (doga_id INT, pont INT, megoldas VARCHAR(3000), kotelezoSzavak VARCHAR(3000), helyesseg INT DEFAULT 90, hiba_ell INT DEFAULT 0, console_check INT DEFAULT 0,5, szavak_check INT DEFAULT 0,5)")
-    await run("CREATE TABLE IF NOT EXISTS osztaly (osztaly VARCHAR(5),nev VARCHAR(255))")
+    await run("CREATE TABLE IF NOT EXISTS osztalyok (osztaly VARCHAR(5),nev VARCHAR(255))")
 
     rows = await all("SELECT * FROM users where name = 'simon'")
     if (rows.length == 0) run("INSERT INTO users (name, password) VALUES ('simon', 'Ez egy erős jelszó!')")
@@ -74,4 +66,4 @@ var token = token_fun();
     if (rows.length == 0) run("INSERT INTO users (name, password) VALUES ('test', 'asdf1234')")
 })()
 
-module.exports = {all, run, token}
+module.exports = {all, run, session}

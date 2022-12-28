@@ -1,4 +1,5 @@
 <%- include('../template/header', {title: "Python kiegészítő"}) %>
+<% if (typeof hiba == "undefined") hiba = 0 %>
 
 <div class="row login-parent my-3">
   
@@ -23,7 +24,11 @@
         <input type="datetime-local" id="kezd" name="birthdaytime" onchange="idoValidator()"><br>
 
         <label for="vege" class="mt-3">Dolgozat vége:</label>
-        <input type="datetime-local" id="vege" name="birthdaytime" onchange="idoValidator()">
+        <input type="datetime-local" id="vege" name="birthdaytime" onchange="idoValidator()"><br>
+
+        <% if (hiba == 1) { %>
+          <br><div class="hiba-alert">Még nem lett létrehozva osztály!</div>
+        <% } %>
 
       </div>
     </div>

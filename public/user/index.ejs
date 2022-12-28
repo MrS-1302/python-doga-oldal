@@ -1,27 +1,15 @@
-<% if (typeof token_get != "undefined") { %>
-
-  <%- include('../template/header', {title: "Python kiegészítő"}) %>
-  
-  <h2><%= token_get %></h2>
+<%- include('../template/header', {title: "Python kiegészítő"}) %>
   
 <div class="row login-parent my-3">
 
-  <%- include('../template/navbar', {active: 1, token_get: token_get}) -%>
+  <%- include('../template/navbar', {active: 1}) -%>
 
   <div class="col-12 col-lg-10 h-100 pt-3 pt-lg-0">
     <div class="content">
       <h3>Dolgozatok</h3>
       
-
-
     </div>
   </div>
 </div>
 
 <%- include('../template/footer', {login: false}) -%>
-
-<% } else {
-  console.log("hiba")
-}
-
-%>
