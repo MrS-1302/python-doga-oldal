@@ -11,7 +11,6 @@ const session = require('express-session');
 
 
 const app = express()
-var asd = __dirname.split("\\").slice(0,-1).join("/")
 
 app.set("view engine", "ejs");
 app.set("views", asd + "/public");
