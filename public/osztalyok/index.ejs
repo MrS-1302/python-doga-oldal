@@ -10,14 +10,40 @@
         <h3 class="d-inline">Osztályok |</h3>
         <input type="button" value=" Új osztály létrehozása" onclick="location.href = '/osztalyok/uj'"><br>
 
-        <% if (hiba == 1) { %>
-            <br><div class="hiba-alert">Még nem lett létrehozva osztály!</div>
-        <% } else { %>
-            <h1>TESSSSSSSSS</h1>
-        <% } %>
-
+        <table class="table table-responsive-md table-striped table-dark mt-3">
+          <tbody id="sorok-parent">
+            <% if (hiba == 1) { %>
+              <br><div class="hiba-alert">Még nem lett létrehozva osztály!</div>
+            <% } else { 
+              for (osztaly of osztalyok) { -%>
+                <tr>
+                  <th scope="row" class="szam"></th>
+                  <td><input type="text" class="input-osztaly" value="<%= osztaly %>"></td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-primary mr-2" onclick="location.href = '/osztalyok/szerkesztes/<%= osztaly %>'">Szerkesztés</button>
+                    <button type="button" class="btn btn-danger"  onclick="this.parentElement.parentElement.remove(); torles('<%= osztaly %>')">Törlés</button>
+                  </td>
+                </tr>
+              <% }
+            } %>
+          </tbody>
+      </table>
     </div>
   </div>
 </div>
+
+<script>
+  function torles(osztaly) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            valasz = JSON.parse(this.responseText);
+            console.log(valasz)
+        }
+    };
+    xhttp.open("POST", "/api/v1/osztaly/torles/" + osztaly, true);
+    xhttp.send();
+  }
+</script>
 
 <%- include('../template/footer', {login: false}) -%>

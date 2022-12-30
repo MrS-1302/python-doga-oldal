@@ -100,6 +100,24 @@ body, html {
     margin-right: 10px;
 }
 
+.siker-alert {
+    border-bottom: solid 2px rgb(83, 216, 56);
+    color: #EEEEEE;
+    border-radius: 5px 5px 0px 5px;
+    width: fit-content;
+    font-size: 1rem;
+    padding: 3px 10px 3px 0px;
+    display: inline-block;
+}
+
+.siker-alert::before {
+    content: "✓";
+    background-color: rgb(83, 216, 56);
+    padding: 6px 13px 6px 13px;
+    border-radius: 5px 0px 0px 3px;
+    margin-right: 10px;
+}
+
 
 
 
@@ -201,4 +219,50 @@ input, #osztaly {
 
 input:hover, #osztaly:hover {
     border: dashed 3px #FFD369;
+}
+
+input:focus, #osztaly:focus {
+    border: solid 3px #FFD369;
+}
+
+option {
+    border: solid 2px #FFD369;
+}
+
+
+
+.input-osztaly {
+    background-color: transparent;
+}
+
+.input-osztaly:hover {
+    border: solid 3px transparent;
+}
+
+.input-osztaly:focus {
+    border: solid 3px #FFD369;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+    display: none;
+}
+
+input[type="file"]::before {
+    content: "Osztály betöltése";
+    width: fit-content;
+    margin-right: 4px;
+    padding-right: 4px;
+    border-right: solid 2px #EEEEEE;
+}
+
+table tbody tr {
+    counter-increment: table-rows;
+}
+
+.szam::before {
+    position: relative;
+    left: calc(50% + 3px);
+    top: 8px;
+    content: counter(table-rows) ".";
 }

@@ -1,0 +1,68 @@
+<%- include('../template/header', {title: "Python kiegészítő"}) %>
+  
+<div class="row login-parent my-3">
+
+  <%- include('../template/navbar', {active: 4}) -%>
+
+  <div class="col-12 col-lg-10 h-100 pt-3 pt-lg-0">
+    <div class="content">
+      <h3>Felhsználók</h3>
+      <table class="table table-responsive-md table-striped table-dark mt-3">
+        <tbody id="sorok-parent">
+          <% tess = 0
+          for (ember of emberek) {%>
+            <tr>    
+              <th scope="row" class="szam"></th>
+              <td>
+                <input type="text" class="input-osztaly" style="width: 100%;" value="<%= ember.name%>" <% if (tess != 0 && emberek[0].role != 3) { %>disabled<% } %>>
+              </td>
+              <td>
+                <% if (tess == 0 || emberek[0].role == 3) { %><input type="text" class="input-osztaly" style="width: 100%;" value="<%= ember.password%>"><% } %>
+              </td>
+              <td class="text-center"><% if (tess == 0 || emberek[0].role == 3) { %><button type='button' class='btn btn-danger'>Törlés</button><% } %></td>
+              <td class="text-center"><% if (tess == 0 || emberek[0].role == 3) { %><button type='button' class='btn btn-primary'>Mentés</button><% } %></td>
+            </tr>
+          <% tess++ } %>
+          <tr>
+            <th scope="row" class="szam"></th>
+            <td><input type="text" id="ujnev" style="width: 100%;"></td>
+            <td><input type="text" id="ujjelszo" style="width: 100%;"></td>
+            <td colspan="2" class="text-center"><button type="button" class="btn btn-primary" onclick="hozzaad()" style="width: 100%;">Hozzáadás</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  function hozzaad() {
+    nev = document.getElementById("ujnev").value
+    pass = document.getElementById("ujjelszo").value
+
+
+    if (nev != "" && pass != "") {
+      table = document.getElementById("sorok-parent");
+      tr = table.insertRow(table.rows.length - 1);
+      th = tr.insertCell(0);
+      td1 = tr.insertCell(1);
+      td2 = tr.insertCell(2);
+      td3 = tr.insertCell(3);
+      td4 = tr.insertCell(4);
+
+      td3.classList.add("text-center")
+      td4.classList.add("text-center")
+      
+      th.outerHTML = "<th scope'row' class='szam'></th>"
+      td1.innerHTML = "<input type='text' class='input-osztaly' value='" + nev + "' style='width: 100%;'>"
+      td2.innerHTML = "<input type='text' class='input-osztaly' value='" + pass + "' style='width: 100%;'>"
+      td3.innerHTML = "<button type='button' class='btn btn-danger' onclick='this.parentElement.parentElement.remove()'>Törlés</button>"
+      td4.innerHTML = "<button type='button' class='btn btn-primary'>Mentés</button>"
+
+      document.getElementById("ujnev").value = ""
+      document.getElementById("ujjelszo").value = ""
+    }
+  }
+</script>
+
+<%- include('../template/footer', {login: false}) -%>

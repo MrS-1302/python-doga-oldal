@@ -8,27 +8,24 @@
   <div class="col-12 col-lg-10 h-100 pt-3 pt-lg-0">
     <div class="content">
       <h3>Új dolgozat létrehozása</h3>
-      <div class="login-item pt-5">
+      <div class="login-item pt-3">
 
+        
         <label for="nev">Dolgozat megnevezése:</label>
         <input type="text" id="nev"><br>
 
-        <label for="osztaly" class="mt-2">Osztály kiválasztása:</label>
-        <select name="cars" id="osztaly">
+        <label for="osztaly" class="mt-2" style="margin-right: 25px;">Osztály kiválasztása:</label>
+        <select class="form-select" name="cars" id="osztaly">
           <% for (osztaly of osztalyok) { -%>
-            <option value="<%= osztaly -%>"><%= osztaly -%></option>
+            <option value="<%= osztaly -%>" style="border: solid 2px #FFD369;"><%= osztaly -%></option>
           <% } -%>
         </select><br>
 
-        <label for="kezd" class="mt-3">Dolgozat kezdete:</label>
+        <label for="kezd" class="mt-3" style="margin-right: 40px;">Dolgozat kezdete:</label>
         <input type="datetime-local" id="kezd" name="birthdaytime" onchange="idoValidator()"><br>
 
-        <label for="vege" class="mt-3">Dolgozat vége:</label>
+        <label for="vege" class="mt-3" style="margin-right: 60px;">Dolgozat vége:</label>
         <input type="datetime-local" id="vege" name="birthdaytime" onchange="idoValidator()"><br>
-
-        <% if (hiba == 1) { %>
-          <br><div class="hiba-alert">Még nem lett létrehozva osztály!</div>
-        <% } %>
 
       </div>
     </div>
